@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../abouts/about_screen.dart';
 import '../theme/app_theme.dart';
 
 class AppMenu extends StatelessWidget {
@@ -46,7 +47,9 @@ class AppMenu extends StatelessWidget {
           title: const Text("Company Info"),
           children: [
             _buildSubMenu(context, "About Us", () {
-              // Navigator.push(context, MaterialPageRoute(builder: (context) => const AboutPage()));
+              Navigator.of(context, rootNavigator: true).push(
+                MaterialPageRoute(builder: (context) => const AboutPage()),
+              );
             }),
             _buildSubMenu(context, "Terms & Conditions", () {
               // Navigator.push(context, MaterialPageRoute(builder: (context) => const TermsPage()));
@@ -70,7 +73,7 @@ class AppMenu extends StatelessWidget {
           },
         ),
 
-        const Spacer(),
+        const SizedBox(height: 20),
         const Padding(
           padding: EdgeInsets.all(16.0),
           child: Center(
@@ -108,9 +111,12 @@ class AppMenu extends StatelessWidget {
     return ListTile(
       contentPadding: const EdgeInsets.only(left: 50),
       title: Text(title),
-      onTap: () {
+      onTap: () async {
+        if (MediaQuery.of(context).size.width < 900) {
+          Navigator.pop(context);
+          await Future.delayed(const Duration(milliseconds: 200));
+        }
         onTap();
-        if (MediaQuery.of(context).size.width < 900) Navigator.pop(context);
       },
     );
   }
