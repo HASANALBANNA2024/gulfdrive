@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_theme.dart';
-
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   const CustomAppBar({super.key, required this.title});
@@ -65,21 +63,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               );
             }
-          },
-        ),
-
-        /// Theme Notifier
-        ValueListenableBuilder<ThemeMode>(
-          valueListenable: themeNotifier,
-          builder: (_, mode, __) {
-            return IconButton(
-              icon: Icon(
-                mode == ThemeMode.light ? Icons.dark_mode : Icons.light_mode,
-              ),
-              onPressed: () => themeNotifier.value = (mode == ThemeMode.light)
-                  ? ThemeMode.dark
-                  : ThemeMode.light,
-            );
           },
         ),
         const SizedBox(width: 8),

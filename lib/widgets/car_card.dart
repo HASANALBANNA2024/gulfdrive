@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gulfdrive/widgets/contact_helper.dart';
 
 class CarCard extends StatelessWidget {
   final Map<String, dynamic> car;
@@ -60,6 +61,7 @@ class CarCard extends StatelessWidget {
                     child: OutlinedButton(
                       onPressed: () {
                         /// navigation logic
+                        ContactHelper.showContactDialog(context);
                       },
                       child: const Text(
                         "Call for Inquiry",

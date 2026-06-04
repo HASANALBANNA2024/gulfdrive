@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme/app_theme.dart';
+
 class AppMenu extends StatelessWidget {
   const AppMenu({super.key});
 
@@ -34,9 +36,7 @@ class AppMenu extends StatelessWidget {
         ),
 
         /// direct navigation
-        _buildListTile(context, "Dashboard", Icons.dashboard, () {
-          // Navigator.push(context, MaterialPageRoute(builder: (context) => const DashboardPage()));
-        }),
+        _buildListTile(context, "Dashboard", Icons.dashboard, () {}),
         _buildListTile(context, "Fleet Catalog", Icons.directions_car, () {
           // Navigator.push(context, MaterialPageRoute(builder: (context) => const FleetPage()));
         }),
@@ -57,6 +57,29 @@ class AppMenu extends StatelessWidget {
         _buildListTile(context, "Support", Icons.support_agent, () {}),
         _buildListTile(context, "Contact", Icons.contact_mail, () {}),
         _buildListTile(context, "FAQ", Icons.question_answer, () {}),
+        ValueListenableBuilder<ThemeMode>(
+          valueListenable: themeNotifier,
+          builder: (_, mode, __) {
+            return SwitchListTile(
+              secondary: const Icon(Icons.dark_mode),
+              title: const Text("Dark Mode"),
+              value: mode == ThemeMode.dark,
+              onChanged: (val) =>
+                  themeNotifier.value = val ? ThemeMode.dark : ThemeMode.light,
+            );
+          },
+        ),
+
+        const Spacer(),
+        const Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Center(
+            child: Text(
+              "Version 1.0.0+1",
+              style: TextStyle(color: Colors.grey, fontSize: 12),
+            ),
+          ),
+        ),
       ],
     );
   }
