@@ -7,6 +7,15 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
+    final List<String> features = [
+      "Professional & Highly Trained Drivers",
+      "Modern Fleet with Advanced Safety Features",
+      "24/7 Dedicated Customer Support",
+      "Transparent Pricing with No Hidden Fees",
+      "Seamless Digital Booking Experience",
+      "Regularly Sanitized & Well-Maintained Vehicles",
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -18,8 +27,6 @@ class AboutPage extends StatelessWidget {
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1100),
-
-          /// listview
           child: ListView(
             padding: const EdgeInsets.all(20),
             children: [
@@ -35,7 +42,6 @@ class AboutPage extends StatelessWidget {
               ),
               const SizedBox(height: 25),
 
-              // Title & Description
               const Text(
                 "Welcome to GulfDrive",
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
@@ -43,8 +49,7 @@ class AboutPage extends StatelessWidget {
               const SizedBox(height: 10),
               const Text(
                 "GulfDrive is a leading provider of premium transportation solutions, established in 2026. "
-                "We are committed to delivering safe, comfortable, and reliable travel experiences. "
-                "Whether for daily commutes or special trips, we bridge the gap between convenience and quality.",
+                "We are committed to delivering safe, comfortable, and reliable travel experiences.",
                 style: TextStyle(fontSize: 16),
               ),
 
@@ -54,8 +59,6 @@ class AboutPage extends StatelessWidget {
                 "Our Mission",
                 "To revolutionize the transportation industry by providing top-tier, technology-driven services that ensure customer satisfaction.",
               ),
-
-              const SizedBox(height: 15),
               _buildSection(
                 context,
                 "Our Vision",
@@ -68,16 +71,25 @@ class AboutPage extends StatelessWidget {
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-              _buildBulletPoint("Professional & Highly Trained Drivers"),
-              _buildBulletPoint("Modern Fleet with Advanced Safety Features"),
-              _buildBulletPoint("24/7 Dedicated Customer Support"),
-              _buildBulletPoint("Transparent Pricing with No Hidden Fees"),
-              _buildBulletPoint("Seamless Digital Booking Experience"),
-              _buildBulletPoint(
-                "Regularly Sanitized & Well-Maintained Vehicles",
+
+              /// dynamic grid system for mobile and web view
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: constraints.maxWidth > 700 ? 2 : 1,
+                      mainAxisSpacing: 0,
+                      childAspectRatio: constraints.maxWidth > 700 ? 12 : 14,
+                    ),
+                    itemCount: features.length,
+                    itemBuilder: (context, index) =>
+                        _buildBulletPoint(features[index]),
+                  );
+                },
               ),
 
-              /// footer and list view
               const SizedBox(height: 30),
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 20),
@@ -133,11 +145,11 @@ class AboutPage extends StatelessWidget {
 
   Widget _buildBulletPoint(String text) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
       child: Row(
         children: [
           const Icon(Icons.check_circle, color: Colors.blue, size: 20),
-          const SizedBox(width: 12),
+          const SizedBox(width: 5),
           Expanded(child: Text(text, style: const TextStyle(fontSize: 15))),
         ],
       ),
