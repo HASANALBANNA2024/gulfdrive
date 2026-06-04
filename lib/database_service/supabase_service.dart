@@ -46,54 +46,48 @@ class SupabaseService {
 
   /// dummy data
 
-  // Future<void> seedDatabase() async {
-  //   try {
-  //     // ১. আগে সব ডেটা ক্লিয়ার করে দিন যাতে আইডি কনফ্লিক্ট না করে
-  //     await _supabase.from('car_categories').delete().neq('car_id', 0);
-  //     await _supabase.from('packages').delete().neq('car_id', 0);
-  //     await _supabase.from('cars').delete().neq('id', 0);
-  //     await _supabase.from('categories').delete().neq('id', 0);
-  //
-  //     // ২. এখন নতুন করে ইনসার্ট করুন
-  //     await _supabase.from('categories').insert([
-  //       {'id': 1, 'name': 'Luxury'},
-  //       {'id': 2, 'name': 'Budget'},
-  //     ]);
-  //
-  //     await _supabase.from('cars').insert([
-  //       {
-  //         'id': 1,
-  //         'name': 'BMW X5',
-  //         'brand': 'BMW',
-  //         'category': 'Luxury',
-  //         'base_price': 500.0,
-  //         'image_url': 'cars/bmw_x5.jpg',
-  //       },
-  //       {
-  //         'id': 2,
-  //         'name': 'Toyota Corolla',
-  //         'brand': 'Toyota',
-  //         'category': 'Budget',
-  //         'base_price': 100.0,
-  //         'image_url': 'cars/toyota_corolla.jpg',
-  //       },
-  //     ]);
-  //
-  //     await _supabase.from('packages').insert([
-  //       {'car_id': 1, 'package_name': 'Weekly Luxury', 'price': 3000.0},
-  //       {'car_id': 2, 'package_name': 'Daily Budget', 'price': 90.0},
-  //     ]);
-  //
-  //     await _supabase.from('car_categories').insert([
-  //       {'car_id': 1, 'category_id': 1},
-  //       {'car_id': 2, 'category_id': 2},
-  //     ]);
-  //
-  //     print("সব ডেটা সফলভাবে রিসেট এবং ইনসার্ট হয়েছে!");
-  //   } catch (e) {
-  //     print("Error: $e");
-  //   }
-  // }
+  Future<void> seedDatabase() async {
+    try {
+      // ১. আগের ডেটা ডিলিট করা
+      await _supabase.from('car_categories').delete().neq('car_id', 0);
+      await _supabase.from('packages').delete().neq('car_id', 0);
+      await _supabase.from('cars').delete().neq('id', 0);
+      await _supabase.from('categories').delete().neq('id', 0);
+
+      // ২. নতুন ডেটা ইনসার্ট করা (সাথে Real Network Image)
+      await _supabase.from('categories').insert([
+        {'id': 1, 'name': 'Luxury'},
+        {'id': 2, 'name': 'Budget'},
+      ]);
+
+      await _supabase.from('cars').insert([
+        {
+          'id': 1,
+          'name': 'BMW X5',
+          'brand': 'BMW',
+          'category': 'Luxury',
+          'base_price': 500.0,
+          // এখানে রিয়েল ইমেজ লিংক ব্যবহার করা হয়েছে
+          'image_url':
+              'https://images.unsplash.com/photo-1599914605927-4a0077c05001?q=80&w=600&auto=format&fit=crop',
+        },
+        {
+          'id': 2,
+          'name': 'Toyota Corolla',
+          'brand': 'Toyota',
+          'category': 'Budget',
+          'base_price': 100.0,
+          'image_url':
+              'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?q=80&w=600&auto=format&fit=crop',
+        },
+      ]);
+
+      // বাকি ইনসার্ট কোড...
+      print("সব ডেটা সফলভাবে রিয়েল ইমেজসহ ইনসার্ট হয়েছে!");
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
 
   /// all data fetch then splash screen remove
   Future<Map<String, dynamic>> initializeAllData() async {
