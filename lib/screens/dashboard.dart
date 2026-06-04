@@ -2,48 +2,73 @@ import 'package:flutter/material.dart';
 import 'package:gulfdrive/widgets/car_card.dart';
 import 'package:gulfdrive/widgets/custom_app_bar.dart';
 
+import '../widgets/app_menu.dart';
+
 class Dashboard extends StatelessWidget {
   final Map<String, dynamic> data;
-
   const Dashboard({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
     final List cars = data['cars'] ?? [];
+    final bool isDesktop = MediaQuery.of(context).size.width >= 900;
 
     return Scaffold(
-      appBar: CustomAppBar(title: "GulfDrive"),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1100),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              /// mobile and web view
-              int crossAxisCount = constraints.maxWidth > 1000
-                  ? 4
-                  : (constraints.maxWidth > 600 ? 2 : 1);
+      // ১. মোবাইলে ড্রয়ার আসবে, ডেস্কটপে null
+      drawer: isDesktop ? null : const Drawer(child: AppMenu()),
+      appBar: const CustomAppBar(title: "GulfDrive"),
 
-              return SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: crossAxisCount,
-                    // সমাধান: মোবাইল হলে ratio বাড়িয়ে দিন, বড় স্ক্রিনে 0.85 রাখুন
-                    childAspectRatio: (constraints.maxWidth < 600) ? 0.9 : 0.85,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                  ),
-                  itemCount: cars.length,
-                  itemBuilder: (context, index) {
-                    return CarCard(car: cars[index]);
+      // ২. এখানে Row ব্যবহার করে সাইডবার ও মেইন বডি আলাদা করলাম
+      body: Row(
+        children: [
+          // ডেস্কটপ ভিউতে সাইডবার
+          if (isDesktop)
+            Container(
+              width: 280,
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                border: Border(
+                  right: BorderSide(color: Colors.grey.withOpacity(0.2)),
+                ),
+              ),
+              child: const AppMenu(),
+            ),
+
+          // মেইন কন্টেন্ট (GridView)
+          Expanded(
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1100),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    int crossAxisCount = constraints.maxWidth > 1000
+                        ? 4
+                        : (constraints.maxWidth > 600 ? 2 : 1);
+                    return SingleChildScrollView(
+                      padding: const EdgeInsets.all(16),
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: crossAxisCount,
+                          childAspectRatio: (constraints.maxWidth < 600)
+                              ? 0.9
+                              : 0.85,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                        ),
+                        itemCount: cars.length,
+                        itemBuilder: (context, index) {
+                          return CarCard(car: cars[index]);
+                        },
+                      ),
+                    );
                   },
                 ),
-              );
-            },
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

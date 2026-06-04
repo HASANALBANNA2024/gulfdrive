@@ -4,9 +4,7 @@ import '../theme/app_theme.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-
   const CustomAppBar({super.key, required this.title});
-
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
@@ -22,13 +20,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         fontSize: 20,
         fontWeight: FontWeight.bold,
       ),
-
-      leading: Builder(
-        builder: (context) => IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () => Scaffold.of(context).openDrawer(),
-        ),
-      ),
+      leading: MediaQuery.of(context).size.width < 900
+          ? Builder(
+              builder: (context) => IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () => Scaffold.of(context).openDrawer(),
+              ),
+            )
+          : null,
       title: Row(
         children: [
           const Icon(Icons.directions_car, color: Colors.blue),
@@ -42,7 +41,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           builder: (context, constraints) {
             double screenWidth = MediaQuery.of(context).size.width;
             bool isMobile = screenWidth < 600;
-
             if (isMobile) {
               return IconButton(
                 icon: const Icon(Icons.search),
