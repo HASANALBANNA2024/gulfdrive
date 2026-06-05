@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gulfdrive/widgets/contact_us_page.dart';
+import 'package:gulfdrive/widgets/faq_page.dart';
 import 'package:gulfdrive/widgets/terms_conditions_page.dart';
 
 import '../abouts/about_screen.dart';
@@ -69,7 +70,12 @@ class AppMenu extends StatelessWidget {
             MaterialPageRoute(builder: (context) => const ContactUsPage()),
           );
         }),
-        _buildListTile(context, "FAQ", Icons.question_answer, () {}),
+        _buildListTile(context, "FAQ", Icons.question_answer, () {
+          Navigator.of(
+            context,
+            rootNavigator: true,
+          ).push(MaterialPageRoute(builder: (context) => const FAQPage()));
+        }),
         ValueListenableBuilder<ThemeMode>(
           valueListenable: themeNotifier,
           builder: (_, mode, __) {
