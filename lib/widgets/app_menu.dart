@@ -41,7 +41,7 @@ class AppMenu extends StatelessWidget {
 
         /// direct navigation
         _buildListTile(context, "Dashboard", Icons.dashboard, () {}),
-        _buildListTile(context, "Fleet Catalog", Icons.directions_car, () {
+        _buildListTile(context, "Fleet Services", Icons.directions_car, () {
           // Navigator.push(context, MaterialPageRoute(builder: (context) => const FleetPage()));
         }),
 

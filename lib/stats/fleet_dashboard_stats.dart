@@ -54,13 +54,12 @@ class FleetDashboardStats extends StatelessWidget {
   }
 
   Widget _buildStatCard(BuildContext context, Map<String, dynamic> data) {
-    // ১. সরাসরি Theme-এর বর্তমান স্টেট চেক করুন
+    /// theme status
     return Builder(
       builder: (context) {
         final theme = Theme.of(context);
         final isDark = theme.brightness == Brightness.dark;
 
-        // ২. সরাসরি কালার নির্ধারণ (থিম থেকে সারফেস কালার)
         final Color backgroundColor = isDark
             ? const Color(0xFF1E1E1E)
             : Colors.white;
@@ -72,7 +71,7 @@ class FleetDashboardStats extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: backgroundColor, // এখানে সরাসরি ডার্ক কালার সেট করলাম
+            color: backgroundColor,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: isDark

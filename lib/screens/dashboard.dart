@@ -34,7 +34,6 @@ class Dashboard extends StatelessWidget {
 
           Expanded(
             child: SingleChildScrollView(
-              // প্যাডিং ওপরের দিকে কমিয়ে দিয়ে গ্যাপ কমানো হয়েছে
               padding: const EdgeInsets.only(
                 top: 8,
                 left: 16,
@@ -42,14 +41,13 @@ class Dashboard extends StatelessWidget {
                 bottom: 20,
               ),
               child: Align(
-                alignment:
-                    Alignment.topCenter, // কন্টেন্ট ওপরের দিকে চেপে রাখার জন্য
+                alignment: Alignment.topCenter,
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 1100),
                   child: Column(
-                    mainAxisAlignment:
-                        MainAxisAlignment.start, // ওপরে এলাইন করা
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      const SizedBox(height: 20),
                       const FleetDashboardStats(),
                       const SizedBox(height: 20),
                       LayoutBuilder(
