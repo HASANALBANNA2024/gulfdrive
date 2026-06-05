@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gulfdrive/widgets/terms_conditions_page.dart';
 
 import '../abouts/about_screen.dart';
 import '../theme/app_theme.dart';
@@ -52,7 +53,11 @@ class AppMenu extends StatelessWidget {
               );
             }),
             _buildSubMenu(context, "Terms & Conditions", () {
-              // Navigator.push(context, MaterialPageRoute(builder: (context) => const TermsPage()));
+              Navigator.of(context, rootNavigator: true).push(
+                MaterialPageRoute(
+                  builder: (context) => const TermsConditionsPage(),
+                ),
+              );
             }),
           ],
         ),
