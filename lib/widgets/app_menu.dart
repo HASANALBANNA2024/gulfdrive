@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gulfdrive/widgets/contact_us_page.dart';
 import 'package:gulfdrive/widgets/terms_conditions_page.dart';
 
 import '../abouts/about_screen.dart';
@@ -62,8 +63,12 @@ class AppMenu extends StatelessWidget {
           ],
         ),
         _buildListTile(context, "Pricing", Icons.price_change, () {}),
-        _buildListTile(context, "Support", Icons.support_agent, () {}),
-        _buildListTile(context, "Contact", Icons.contact_mail, () {}),
+        // _buildListTile(context, "Support", Icons.support_agent, () {}),
+        _buildListTile(context, "Contact", Icons.contact_mail, () {
+          Navigator.of(context, rootNavigator: true).push(
+            MaterialPageRoute(builder: (context) => const ContactUsPage()),
+          );
+        }),
         _buildListTile(context, "FAQ", Icons.question_answer, () {}),
         ValueListenableBuilder<ThemeMode>(
           valueListenable: themeNotifier,
