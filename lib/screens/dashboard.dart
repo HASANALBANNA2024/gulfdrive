@@ -12,17 +12,14 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List cars = data['cars'] ?? [];
-    final bool isDesktop = MediaQuery.of(context).size.width >= 900;
+    final bool isDesktop = MediaQuery.of(context).size.width >= 1100;
 
     return Scaffold(
-      /// mobile drawer open and desktop null
       drawer: isDesktop ? null : const Drawer(child: AppMenu()),
       appBar: const CustomAppBar(title: "GulfDrive"),
-
-      ///sidebar logic for web and desktop
       body: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// desktop view sidebar
           if (isDesktop)
             Container(
               width: 280,
@@ -35,29 +32,26 @@ class Dashboard extends StatelessWidget {
               child: const AppMenu(),
             ),
 
-          ///stats
-          const SizedBox(height: 20),
-
-          /// main content
-          /// main content
           Expanded(
-            child: Center(
-              // কার্ডগুলোকে স্ক্রিনের মাঝখানে রাখার জন্য
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(
-                  maxWidth: 1100,
-                ), // এখানেই 1100px লিমিট করা
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 0,
-                  ),
+            child: SingleChildScrollView(
+              // প্যাডিং ওপরের দিকে কমিয়ে দিয়ে গ্যাপ কমানো হয়েছে
+              padding: const EdgeInsets.only(
+                top: 8,
+                left: 16,
+                right: 16,
+                bottom: 20,
+              ),
+              child: Align(
+                alignment:
+                    Alignment.topCenter, // কন্টেন্ট ওপরের দিকে চেপে রাখার জন্য
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1100),
                   child: Column(
+                    mainAxisAlignment:
+                        MainAxisAlignment.start, // ওপরে এলাইন করা
                     children: [
-                      const FleetDashboardStats(), // কার্ডগুলো এখানে সুন্দরভাবে মাঝখানে থাকবে
+                      const FleetDashboardStats(),
                       const SizedBox(height: 20),
-
-                      /// Car Grid
                       LayoutBuilder(
                         builder: (context, constraints) {
                           int crossAxisCount = constraints.maxWidth > 1000
