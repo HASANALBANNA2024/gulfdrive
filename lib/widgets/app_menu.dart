@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gulfdrive/widgets/contact_us_page.dart';
 import 'package:gulfdrive/widgets/faq_page.dart';
+import 'package:gulfdrive/widgets/services_screen.dart';
 import 'package:gulfdrive/widgets/terms_conditions_page.dart';
 
 import '../abouts/about_screen.dart';
@@ -41,10 +42,22 @@ class AppMenu extends StatelessWidget {
 
         /// direct navigation
         _buildListTile(context, "Dashboard", Icons.dashboard, () {}),
+
+        /// Services
+        _buildListTile(context, "Services", Icons.directions_car, () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ServicesScreen(),
+            ), // আপনার তৈরি করা সার্ভিস পেজ
+          );
+        }),
+
         _buildListTile(context, "Fleet Services", Icons.directions_car, () {
           // Navigator.push(context, MaterialPageRoute(builder: (context) => const FleetPage()));
         }),
 
+        ///service
         ExpansionTile(
           leading: const Icon(Icons.business),
           title: const Text("Company Info"),
