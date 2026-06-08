@@ -5,18 +5,22 @@ class ServicesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// service list
     final List<Map<String, dynamic>> services = [
       {
         "title": "Hourly Rental",
         "desc":
-            "Ideal for short city trips, quick errands, or business meetings. Enjoy flexibility by the hour.",
+            "Ideal for short city trips, quick errands, or business meetings. Enjoy flexibility by the hour.Ideal for short city trips, quick errands, or business meetings. Enjoy flexibility by the hour,Ideal for short city trips, quick errands, or business meetings. Enjoy flexibility by the hour,Ideal for short city trips, quick errands, or business meetings. Enjoy flexibility by the hour",
         "features": [
           "Flexible Timing",
           "Quick Booking",
           "City Access",
           "24/7 Support",
+          "Flexible Timing",
+          "Quick Booking",
+          "City Access",
+          "24/7 Support",
         ],
+        "image": "assets/images/background_header.jpg",
       },
       {
         "title": "Daily Rental",
@@ -27,7 +31,12 @@ class ServicesScreen extends StatelessWidget {
           "Insurance Included",
           "Reliable Fleet",
           "Daily Rate",
+          "Flexible Timing",
+          "Quick Booking",
+          "City Access",
+          "24/7 Support",
         ],
+        "image": "assets/images/background_header.jpg",
       },
       {
         "title": "Weekly Rental",
@@ -38,7 +47,12 @@ class ServicesScreen extends StatelessWidget {
           "Roadside Support",
           "Cost Effective",
           "Long-term Discount",
+          "Flexible Timing",
+          "Quick Booking",
+          "City Access",
+          "24/7 Support",
         ],
+        "image": "assets/images/background_header.jpg",
       },
       {
         "title": "Monthly Rental",
@@ -49,18 +63,24 @@ class ServicesScreen extends StatelessWidget {
           "Replacement Car",
           "Best Rates",
           "Priority Service",
+          "Flexible Timing",
+          "Quick Booking",
+          "City Access",
+          "24/7 Support",
         ],
+        "image": "assets/images/background_header.jpg",
       },
       {
         "title": "Chauffeur Service",
         "desc":
-            "Experience luxury and comfort with our professional, well-trained, and courteous drivers.",
+            "Experience luxury and comfort with our professional, well-trained drivers.",
         "features": [
           "Pro Drivers",
           "Luxury Vehicles",
           "Airport Pickup",
           "Safe Travel",
         ],
+        "image": "assets/images/background_header.jpg",
       },
       {
         "title": "Corporate Transport",
@@ -72,39 +92,39 @@ class ServicesScreen extends StatelessWidget {
           "Monthly Billing",
           "Dedicated Support",
         ],
+        "image": "assets/images/background_header.jpg",
       },
     ];
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Our Services")),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            /// Header Background Image
-            Container(
-              height: 200,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/background_header.jpg'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
+      appBar: AppBar(title: const Text("Our Services"), centerTitle: true),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          int crossAxisCount = (constraints.maxWidth >= 1100)
+              ? 3
+              : (constraints.maxWidth >= 600)
+              ? 2
+              : 1;
 
-            // Content Area
-            Center(
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Center(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 1100),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Wrap(
-                    spacing: 20,
-                    runSpacing: 20,
-                    alignment: WrapAlignment.center,
-                    children: services.map((service) {
-                      return SizedBox(
-                        width: 350,
+                child: Wrap(
+                  spacing: 20,
+                  runSpacing: 20,
+                  alignment: WrapAlignment.center,
+                  children: services.map((service) {
+                    double cardWidth =
+                        (constraints.maxWidth / crossAxisCount) - 30;
+                    if (constraints.maxWidth < 600)
+                      cardWidth = constraints.maxWidth - 32;
+
+                    return SizedBox(
+                      width: cardWidth,
+                      // IntrinsicHeight প্রতিটি কার্ডকে সারির সবচেয়ে বড় কার্ডের হাইট নিতে সাহায্য করে
+                      child: IntrinsicHeight(
                         child: Container(
                           padding: const EdgeInsets.all(20),
                           decoration: BoxDecoration(
@@ -115,7 +135,7 @@ class ServicesScreen extends StatelessWidget {
                                 context,
                               ).primaryColor.withOpacity(0.5),
                               width: 1.5,
-                            ), // বর্ডারটি স্পষ্ট করা হয়েছে
+                            ),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black.withOpacity(0.05),
@@ -125,19 +145,20 @@ class ServicesScreen extends StatelessWidget {
                             ],
                           ),
                           child: Column(
-                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              // Icon/Image Placeholder
-                              Container(
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(
-                                    context,
-                                  ).primaryColor.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: const Center(
-                                  child: Icon(Icons.directions_car, size: 50),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.asset(
+                                  service['image'],
+                                  height: 140,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, _, __) => Container(
+                                    height: 140,
+                                    color: Colors.grey[200],
+                                    child: const Icon(Icons.directions_car),
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 16),
@@ -154,6 +175,10 @@ class ServicesScreen extends StatelessWidget {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(color: Colors.grey[700]),
                               ),
+
+                              // Spacer কার্ডের ভেতরের বাকি খালি জায়গা দখল করে চিপসকে নিচে নামিয়ে দেবে
+                              const Spacer(),
+
                               const SizedBox(height: 16),
                               Wrap(
                                 spacing: 6,
@@ -176,14 +201,14 @@ class ServicesScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                      );
-                    }).toList(),
-                  ),
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
