@@ -45,11 +45,8 @@ class AppMenu extends StatelessWidget {
 
         /// Services
         _buildListTile(context, "Services", Icons.directions_car, () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const ServicesScreen(),
-            ), // আপনার তৈরি করা সার্ভিস পেজ
+          Navigator.of(context, rootNavigator: true).push(
+            MaterialPageRoute(builder: (context) => const ServicesScreen()),
           );
         }),
 

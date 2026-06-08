@@ -118,12 +118,12 @@ class ServicesScreen extends StatelessWidget {
                   children: services.map((service) {
                     double cardWidth =
                         (constraints.maxWidth / crossAxisCount) - 30;
-                    if (constraints.maxWidth < 600)
+                    if (constraints.maxWidth < 600) {
                       cardWidth = constraints.maxWidth - 32;
+                    }
 
                     return SizedBox(
                       width: cardWidth,
-                      // IntrinsicHeight প্রতিটি কার্ডকে সারির সবচেয়ে বড় কার্ডের হাইট নিতে সাহায্য করে
                       child: IntrinsicHeight(
                         child: Container(
                           padding: const EdgeInsets.all(20),
@@ -176,7 +176,6 @@ class ServicesScreen extends StatelessWidget {
                                 style: TextStyle(color: Colors.grey[700]),
                               ),
 
-                              // Spacer কার্ডের ভেতরের বাকি খালি জায়গা দখল করে চিপসকে নিচে নামিয়ে দেবে
                               const Spacer(),
 
                               const SizedBox(height: 16),
