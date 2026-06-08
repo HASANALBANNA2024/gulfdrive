@@ -79,8 +79,7 @@ class AppMenu extends StatelessWidget {
           ],
         ),
 
-        _buildListTile(context, "Pricing", Icons.price_change, () {}),
-
+        // _buildListTile(context, "Pricing", Icons.price_change, () {}),
         _buildListTile(context, "Contact", Icons.contact_mail, () {
           Navigator.of(context, rootNavigator: true).push(
             MaterialPageRoute(builder: (context) => const ContactUsPage()),

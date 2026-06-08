@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gulfdrive/widgets/contact_helper.dart';
 
+import '../screens/car_details_screen.dart';
+
 class CarCard extends StatelessWidget {
   final Map<String, dynamic> car;
 
@@ -9,84 +11,89 @@ class CarCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      clipBehavior: Clip.antiAlias,
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Column(
+        mainAxisSize: MainAxisSize
+            .min, // এটি কার্ডকে কন্টেন্ট অনুযায়ী সাইজ নিতে বাধ্য করবে
         children: [
-          /// image area
-          Expanded(
-            flex: 5,
-            child: Image.network(
-              car['image_url'] ?? '',
-              fit: BoxFit.cover,
-              width: double.infinity,
-              errorBuilder: (context, error, stack) =>
-                  const Center(child: Icon(Icons.directions_car, size: 40)),
-            ),
-          ),
-
-          /// Text and area section
-          Expanded(
-            flex: 5,
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /// Text Section
-                  Text(
-                    car['name'] ?? 'Car Name',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    "${car['base_price'] ?? '0'}/day",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-
-                  const Spacer(),
-
-                  SizedBox(
-                    height: 35,
-                    width: double.infinity,
-                    child: OutlinedButton(
-                      onPressed: () {
-                        /// navigation logic
-                        ContactHelper.showContactDialog(context);
-                      },
-                      child: const Text(
-                        "Call for Inquiry",
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  SizedBox(
-                    height: 35,
-                    width: double.infinity,
-                    child: OutlinedButton(
-                      onPressed: () {
-                        /// Navigation Logic
-                      },
-                      child: const Text(
-                        "View Details",
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ),
-                  ),
-                ],
+          AspectRatio(
+            aspectRatio: 16 / 9,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(16),
+              ),
+              child: Image.network(
+                car['image_url'] ?? '',
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => Container(
+                  color: Colors.grey[200],
+                  child: const Icon(Icons.directions_car, size: 50),
+                ),
               ),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  car['name'] ?? 'Car Name',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                _buildFeatureRow(Icons.settings, car['transmission'] ?? 'N/A'),
+                _buildFeatureRow(
+                  Icons.event_seat,
+                  "${car['seats'] ?? 0} Seats",
+                ),
+                _buildFeatureRow(
+                  Icons.local_gas_station,
+                  car['fuel_type'] ?? 'N/A',
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  height: 45,
+                  child: OutlinedButton(
+                    onPressed: () => ContactHelper.showContactDialog(context),
+                    child: const Text("Call for Inquiry"),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                SizedBox(
+                  width: double.infinity,
+                  height: 45,
+                  child: OutlinedButton(
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => CarDetailsScreen(car: car),
+                      ),
+                    ),
+                    child: const Text("View Details"),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFeatureRow(IconData icon, String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          Icon(icon, size: 16, color: Colors.blue),
+          const SizedBox(width: 8),
+          Text(text),
         ],
       ),
     );

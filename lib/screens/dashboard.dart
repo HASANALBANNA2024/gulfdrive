@@ -31,49 +31,47 @@ class Dashboard extends StatelessWidget {
               ),
               child: const AppMenu(),
             ),
-
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.only(
-                top: 8,
-                left: 16,
-                right: 16,
-                bottom: 20,
-              ),
-              child: Align(
-                alignment: Alignment.topCenter,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              child: Center(
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 1100),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 20),
                       const FleetDashboardStats(),
                       const SizedBox(height: 20),
+
+                      /// wrap use
                       LayoutBuilder(
                         builder: (context, constraints) {
-                          int crossAxisCount = constraints.maxWidth > 1000
-                              ? 4
-                              : (constraints.maxWidth > 600 ? 2 : 1);
-                          return GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: crossAxisCount,
-                                  childAspectRatio: (constraints.maxWidth < 600)
-                                      ? 0.9
-                                      : 0.85,
-                                  crossAxisSpacing: 16,
-                                  mainAxisSpacing: 16,
-                                ),
-                            itemCount: cars.length,
-                            itemBuilder: (context, index) {
-                              return CarCard(car: cars[index]);
-                            },
+                          double totalWidth = constraints.maxWidth;
+
+                          /// card limit with screen size width
+                          double cardWidth;
+                          if (totalWidth >= 1100) {
+                            cardWidth = (totalWidth / 4) - 16;
+                          } else if (totalWidth >= 800) {
+                            cardWidth = (totalWidth / 3) - 16;
+                          } else if (totalWidth >= 500) {
+                            cardWidth = (totalWidth / 2) - 16;
+                          } else {
+                            cardWidth = totalWidth;
+                          }
+
+                          return Wrap(
+                            spacing: 16, // কার্ডের মাঝে হরিজন্টাল স্পেস
+                            runSpacing: 16, // কার্ডের মাঝে ভার্টিকাল স্পেস
+                            children: cars.map((car) {
+                              return SizedBox(
+                                width: cardWidth,
+                                child: CarCard(car: car),
+                              );
+                            }).toList(),
                           );
                         },
                       ),
+                      // ------------------------------------------
                     ],
                   ),
                 ),
