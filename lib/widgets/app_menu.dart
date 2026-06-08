@@ -21,29 +21,35 @@ class AppMenu extends StatelessWidget {
             image: DecorationImage(
               image: AssetImage('assets/images/background_header.jpg'),
               fit: BoxFit.cover,
-              opacity: 0.9,
+              colorFilter: ColorFilter.mode(
+                Colors.black45,
+                BlendMode.darken,
+              ), // ইমেজটা একটু ডার্ক করলে টেক্সট ভালো ফুটে উঠবে
             ),
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment:
+                MainAxisAlignment.end, // টেক্সট একদম নিচে চলে যাবে
+            crossAxisAlignment: CrossAxisAlignment.start, // বাম দিকে থাকবে
             children: [
-              SizedBox(height: 10),
               Text(
                 'GulfDrive',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 20,
+                  fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
+              ),
+              Text(
+                'Your Travel Partner',
+                style: TextStyle(color: Colors.white70, fontSize: 14),
               ),
             ],
           ),
         ),
 
-        /// direct navigation
         _buildListTile(context, "Dashboard", Icons.dashboard, () {}),
 
-        /// Services
         _buildListTile(context, "Services", Icons.directions_car, () {
           Navigator.of(context, rootNavigator: true).push(
             MaterialPageRoute(builder: (context) => const ServicesScreen()),
@@ -54,7 +60,6 @@ class AppMenu extends StatelessWidget {
           // Navigator.push(context, MaterialPageRoute(builder: (context) => const FleetPage()));
         }),
 
-        ///service
         ExpansionTile(
           leading: const Icon(Icons.business),
           title: const Text("Company Info"),
@@ -73,19 +78,22 @@ class AppMenu extends StatelessWidget {
             }),
           ],
         ),
+
         _buildListTile(context, "Pricing", Icons.price_change, () {}),
-        // _buildListTile(context, "Support", Icons.support_agent, () {}),
+
         _buildListTile(context, "Contact", Icons.contact_mail, () {
           Navigator.of(context, rootNavigator: true).push(
             MaterialPageRoute(builder: (context) => const ContactUsPage()),
           );
         }),
+
         _buildListTile(context, "FAQ", Icons.question_answer, () {
           Navigator.of(
             context,
             rootNavigator: true,
           ).push(MaterialPageRoute(builder: (context) => const FAQPage()));
         }),
+
         ValueListenableBuilder<ThemeMode>(
           valueListenable: themeNotifier,
           builder: (_, mode, __) {
@@ -100,20 +108,17 @@ class AppMenu extends StatelessWidget {
         ),
 
         const SizedBox(height: 20),
-        const Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Center(
-            child: Text(
-              "Version 1.0.0+1",
-              style: TextStyle(color: Colors.grey, fontSize: 12),
-            ),
+        const Center(
+          child: Text(
+            "Version 1.0.0+1",
+            style: TextStyle(color: Colors.grey, fontSize: 12),
           ),
         ),
       ],
     );
   }
 
-  /// simple menu item
+  /// মেনু আইটেম নেভিগেশন হ্যান্ডলার
   Widget _buildListTile(
     BuildContext context,
     String title,
@@ -123,16 +128,18 @@ class AppMenu extends StatelessWidget {
     return ListTile(
       leading: Icon(icon),
       title: Text(title),
-      onTap: () {
+      onTap: () async {
+        // ছোট স্ক্রিনে ড্রয়ার ক্লোজ হওয়া নিশ্চিত করার জন্য ডিলে
+        if (MediaQuery.of(context).size.width < 900) {
+          Navigator.pop(context);
+          await Future.delayed(const Duration(milliseconds: 250));
+        }
         onTap();
-
-        ///call back run
-        if (MediaQuery.of(context).size.width < 900) Navigator.pop(context);
       },
     );
   }
 
-  /// simple sub menu item
+  /// সাব-মেনু আইটেম নেভিগেশন হ্যান্ডলার
   Widget _buildSubMenu(BuildContext context, String title, VoidCallback onTap) {
     return ListTile(
       contentPadding: const EdgeInsets.only(left: 50),
@@ -140,7 +147,7 @@ class AppMenu extends StatelessWidget {
       onTap: () async {
         if (MediaQuery.of(context).size.width < 900) {
           Navigator.pop(context);
-          await Future.delayed(const Duration(milliseconds: 200));
+          await Future.delayed(const Duration(milliseconds: 250));
         }
         onTap();
       },
