@@ -91,7 +91,7 @@ class _AppMenuState extends State<AppMenu> {
 
             return ExpansionTile(
               leading: const Icon(Icons.directions_car),
-              title: const Text("Fleet Services"),
+              title: const Text("Fleet Catalog"),
               children: cars.map((car) {
                 return ListTile(
                   contentPadding: const EdgeInsets.only(left: 50),
