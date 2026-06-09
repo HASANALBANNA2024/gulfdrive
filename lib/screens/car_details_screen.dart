@@ -9,7 +9,8 @@ class CarDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    // ফিচারগুলোকে কমা অনুযায়ী আলাদা করে লিস্টে রূপান্তর করা
+
+    /// features
     List<String> features =
         (car['car_features']?.toString() ??
                 'Active Safety,Lane Keeping,Adaptive Cruise Control')
@@ -28,7 +29,7 @@ class CarDetailsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ১. ইমেজ সেকশন
+                /// image section
                 ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: Image.network(
@@ -46,7 +47,7 @@ class CarDetailsScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 25),
 
-                // ২. নাম ও ডেসক্রিপশন
+                /// name and description
                 Text(
                   car['name'] ?? 'BMW X5',
                   style: const TextStyle(
@@ -67,7 +68,7 @@ class CarDetailsScreen extends StatelessWidget {
 
                 const SizedBox(height: 30),
 
-                // ৩. স্পেসিফিকেশন কার্ড (প্রফেশনাল লুক)
+                /// specification card
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(

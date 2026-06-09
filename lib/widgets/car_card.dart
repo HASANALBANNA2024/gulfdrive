@@ -55,6 +55,10 @@ class CarCard extends StatelessWidget {
                   Icons.local_gas_station,
                   car['fuel_type'] ?? 'N/A',
                 ),
+                _buildFeatureRow(
+                  Icons.ac_unit,
+                  (car['ac_status'] == true) ? 'AC: Yes' : 'AC: No',
+                ),
                 const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,

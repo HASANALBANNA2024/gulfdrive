@@ -1,14 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:gulfdrive/database_service/supabase_service.dart';
 import 'package:gulfdrive/widgets/contact_us_page.dart';
 import 'package:gulfdrive/widgets/faq_page.dart';
 import 'package:gulfdrive/widgets/services_screen.dart';
 import 'package:gulfdrive/widgets/terms_conditions_page.dart';
 
 import '../abouts/about_screen.dart';
+import '../screens/car_details_screen.dart';
 import '../theme/app_theme.dart';
 
-class AppMenu extends StatelessWidget {
+class AppMenu extends StatefulWidget {
   const AppMenu({super.key});
+
+  @override
+  State<AppMenu> createState() => _AppMenuState();
+}
+
+class _AppMenuState extends State<AppMenu> {
+  final SupabaseService _supabaseService = SupabaseService();
+  late Future<List<Map<String, dynamic>>> _carsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+
+    /// data load call
+    _carsFuture = _supabaseService.fetchData('cars');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,16 +39,12 @@ class AppMenu extends StatelessWidget {
             image: DecorationImage(
               image: AssetImage('assets/images/background_header.jpg'),
               fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode(
-                Colors.black45,
-                BlendMode.darken,
-              ), // ইমেজটা একটু ডার্ক করলে টেক্সট ভালো ফুটে উঠবে
+              colorFilter: ColorFilter.mode(Colors.black45, BlendMode.darken),
             ),
           ),
           child: Column(
-            mainAxisAlignment:
-                MainAxisAlignment.end, // টেক্সট একদম নিচে চলে যাবে
-            crossAxisAlignment: CrossAxisAlignment.start, // বাম দিকে থাকবে
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'GulfDrive',
@@ -56,9 +70,48 @@ class AppMenu extends StatelessWidget {
           );
         }),
 
-        _buildListTile(context, "Fleet Services", Icons.directions_car, () {
-          // Navigator.push(context, MaterialPageRoute(builder: (context) => const FleetPage()));
-        }),
+        ///dynamic future builder
+        FutureBuilder<List<Map<String, dynamic>>>(
+          future: _carsFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const ListTile(
+                leading: Icon(Icons.directions_car),
+                title: Text("Loading Fleet..."),
+              );
+            }
+            if (snapshot.hasError) {
+              return const ListTile(
+                leading: Icon(Icons.error),
+                title: Text("Error loading"),
+              );
+            }
+
+            final cars = snapshot.data ?? [];
+
+            return ExpansionTile(
+              leading: const Icon(Icons.directions_car),
+              title: const Text("Fleet Services"),
+              children: cars.map((car) {
+                return ListTile(
+                  contentPadding: const EdgeInsets.only(left: 50),
+                  title: Text(car['name'] ?? 'Unknown Car'),
+                  onTap: () async {
+                    if (MediaQuery.of(context).size.width < 900) {
+                      Navigator.pop(context);
+                      await Future.delayed(const Duration(milliseconds: 250));
+                    }
+                    Navigator.of(context, rootNavigator: true).push(
+                      MaterialPageRoute(
+                        builder: (context) => CarDetailsScreen(car: car),
+                      ),
+                    );
+                  },
+                );
+              }).toList(),
+            );
+          },
+        ),
 
         ExpansionTile(
           leading: const Icon(Icons.business),
@@ -79,7 +132,6 @@ class AppMenu extends StatelessWidget {
           ],
         ),
 
-        // _buildListTile(context, "Pricing", Icons.price_change, () {}),
         _buildListTile(context, "Contact", Icons.contact_mail, () {
           Navigator.of(context, rootNavigator: true).push(
             MaterialPageRoute(builder: (context) => const ContactUsPage()),
@@ -117,7 +169,6 @@ class AppMenu extends StatelessWidget {
     );
   }
 
-  /// মেনু আইটেম নেভিগেশন হ্যান্ডলার
   Widget _buildListTile(
     BuildContext context,
     String title,
@@ -128,7 +179,6 @@ class AppMenu extends StatelessWidget {
       leading: Icon(icon),
       title: Text(title),
       onTap: () async {
-        // ছোট স্ক্রিনে ড্রয়ার ক্লোজ হওয়া নিশ্চিত করার জন্য ডিলে
         if (MediaQuery.of(context).size.width < 900) {
           Navigator.pop(context);
           await Future.delayed(const Duration(milliseconds: 250));
@@ -138,7 +188,6 @@ class AppMenu extends StatelessWidget {
     );
   }
 
-  /// সাব-মেনু আইটেম নেভিগেশন হ্যান্ডলার
   Widget _buildSubMenu(BuildContext context, String title, VoidCallback onTap) {
     return ListTile(
       contentPadding: const EdgeInsets.only(left: 50),

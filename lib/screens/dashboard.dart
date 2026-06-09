@@ -60,8 +60,8 @@ class Dashboard extends StatelessWidget {
                           }
 
                           return Wrap(
-                            spacing: 16, // কার্ডের মাঝে হরিজন্টাল স্পেস
-                            runSpacing: 16, // কার্ডের মাঝে ভার্টিকাল স্পেস
+                            spacing: 16,
+                            runSpacing: 16,
                             children: cars.map((car) {
                               return SizedBox(
                                 width: cardWidth,
