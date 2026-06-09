@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gulfdrive/search_delegate/global_search_delegate.dart'; // তোমার সার্চ ডেলিগেট ফাইল ইমপোর্ট করো
+import 'package:gulfdrive/search_delegate/global_search_delegate.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -55,7 +55,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 width: screenWidth * 0.4,
                 padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                 child: TextField(
-                  readOnly: true, // সার্চ রেজাল্ট দেখানোর জন্য শুধু রিড মোড
+                  readOnly: true,
                   onTap: () => showSearch(
                     context: context,
                     delegate: GlobalSearchDelegate(),
