@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gulfdrive/widgets/responsive_extension.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class FAQPage extends StatefulWidget {
@@ -55,118 +56,110 @@ class _FAQPageState extends State<FAQPage> {
       ],
     };
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Help Center & FAQs"),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 800),
-          child: ListView(
-            padding: const EdgeInsets.all(20),
-            children: [
-              ...faqData.entries.map(
-                (category) => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Text(
-                        category.key.toUpperCase(),
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.blue,
-                          letterSpacing: 1.2,
-                        ),
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 800),
+        child: ListView(
+          padding: const EdgeInsets.all(20),
+          children: [
+            ...faqData.entries.map(
+              (category) => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Text(
+                      category.key.toUpperCase(),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.blue,
+                        letterSpacing: 1.2,
                       ),
                     ),
-                    ...category.value.map((item) {
-                      int index =
-                          faqData.values.toList().indexOf(category.value) * 10 +
-                          category.value.indexOf(item);
-                      return Card(
-                        margin: const EdgeInsets.only(bottom: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                  ),
+                  ...category.value.map((item) {
+                    int index =
+                        faqData.values.toList().indexOf(category.value) * 10 +
+                        category.value.indexOf(item);
+                    return Card(
+                      margin: const EdgeInsets.only(bottom: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: ExpansionTile(
+                        key: Key(index.toString()),
+                        initiallyExpanded: index == _expandedIndex,
+                        onExpansionChanged: (isExpanded) {
+                          setState(() {
+                            _expandedIndex = isExpanded ? index : null;
+                          });
+                        },
+                        title: Text(
+                          item["q"]!,
+                          style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
-                        child: ExpansionTile(
-                          key: Key(index.toString()),
-                          initiallyExpanded: index == _expandedIndex,
-                          onExpansionChanged: (isExpanded) {
-                            setState(() {
-                              _expandedIndex = isExpanded ? index : null;
-                            });
-                          },
-                          title: Text(
-                            item["q"]!,
-                            style: const TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Text(
-                                item["a"]!,
-                                style: TextStyle(
-                                  height: 1.6,
-                                  color: isDarkMode
-                                      ? Colors.grey[400]
-                                      : Colors.grey[700],
-                                ),
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Text(
+                              item["a"]!,
+                              style: TextStyle(
+                                height: 1.6,
+                                color: isDarkMode
+                                    ? Colors.grey[400]
+                                    : Colors.grey[700],
                               ),
                             ),
-                          ],
-                        ),
-                      );
-                    }),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 40),
-
-              const Text(
-                "Still need help?",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-              Wrap(
-                spacing: 15,
-                runSpacing: 15,
-                alignment: WrapAlignment.center,
-                children: [
-                  _buildSupportButton(
-                    Icons.call,
-                    "Call",
-                    () => _launchUrl("tel:+8801234567890"),
-                  ),
-                  _buildSupportButton(
-                    Icons.message,
-                    "WhatsApp",
-                    () => _launchUrl("https://wa.me/8801234567890"),
-                  ),
-                  _buildSupportButton(
-                    Icons.email,
-                    "Email",
-                    () => _launchUrl("mailto:support@gulfdrive.com"),
-                  ),
-                  _buildSupportButton(
-                    Icons.location_on,
-                    "Office",
-                    () => _launchUrl(
-                      "https://www.google.com/maps/search/?api=1&query=Uttara+Sector+10+Dhaka",
-                    ),
-                  ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
                 ],
               ),
-              const SizedBox(height: 30),
-            ],
-          ),
+            ),
+            const SizedBox(height: 40),
+            const Text(
+              "Still need help?",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+            Wrap(
+              spacing: 15,
+              runSpacing: 15,
+              alignment: WrapAlignment.center,
+              children: [
+                _buildSupportButton(
+                  Icons.call,
+                  "Call",
+                  () => _launchUrl("tel:+8801234567890"),
+                ),
+                _buildSupportButton(
+                  Icons.message,
+                  "WhatsApp",
+                  () => _launchUrl("https://wa.me/8801234567890"),
+                ),
+                _buildSupportButton(
+                  Icons.email,
+                  "Email",
+                  () => _launchUrl("mailto:support@gulfdrive.com"),
+                ),
+                _buildSupportButton(
+                  Icons.location_on,
+                  "Office",
+                  () => _launchUrl(
+                    "https://www.google.com/maps/search/?api=1&query=Uttara+Sector+10+Dhaka",
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 30),
+          ],
         ),
       ),
-    );
+    ).toResponsiveScaffold(context, "Help Center & FAQs");
   }
 
   Widget _buildSupportButton(IconData icon, String label, VoidCallback onTap) {

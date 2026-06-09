@@ -97,7 +97,6 @@ class ServicesScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Our Services"), centerTitle: true),
       body: LayoutBuilder(
         builder: (context, constraints) {
           int crossAxisCount = (constraints.maxWidth >= 1100)
@@ -210,5 +209,7 @@ class ServicesScreen extends StatelessWidget {
         },
       ),
     );
+
+    ///
   }
 }

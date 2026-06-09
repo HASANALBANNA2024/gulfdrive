@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gulfdrive/widgets/responsive_extension.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ContactUsPage extends StatelessWidget {
@@ -15,88 +16,76 @@ class ContactUsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Contact & Support",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 600),
-          child: ListView(
-            padding: const EdgeInsets.all(20),
-            children: [
-              const SizedBox(height: 10),
+    /// responsive call
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 600),
+        child: ListView(
+          padding: const EdgeInsets.all(20),
+          children: [
+            const SizedBox(height: 10),
+            const Icon(
+              Icons.contact_mail_rounded,
+              size: 80,
+              color: Colors.blueAccent,
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              "Get in Touch",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              "We are available to assist you with any inquiries.",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: isDarkMode ? Colors.grey[400] : Colors.grey[700],
+              ),
+            ),
+            const SizedBox(height: 30),
 
-              /// Icon Card
-              Icon(
-                Icons.contact_mail_rounded,
-                size: 80,
-                color: Colors.blueAccent,
+            _buildContactCard(
+              Icons.phone_in_talk_rounded,
+              "Call Support",
+              "+8801234567890",
+              () => _launchUrl("tel:+8801234567890"),
+              isDarkMode,
+            ),
+            _buildContactCard(
+              Icons.email_rounded,
+              "Email Us",
+              "support@gulfdrive.com",
+              () => _launchUrl("mailto:support@gulfdrive.com"),
+              isDarkMode,
+            ),
+            _buildContactCard(
+              Icons.chat_bubble_rounded,
+              "WhatsApp",
+              "+8801234567890",
+              () => _launchUrl("https://wa.me/8801234567890"),
+              isDarkMode,
+            ),
+            _buildContactCard(
+              Icons.place_rounded,
+              "Office Address",
+              "House 12, Road 5, Sector 10, Uttara, Dhaka",
+              () => _launchUrl(
+                "https://www.google.com/maps/search/?api=1&query=Uttara+Sector+10+Dhaka",
               ),
-              const SizedBox(height: 20),
-
-              const Text(
-                "Get in Touch",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                "We are available to assist you with any inquiries.",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: isDarkMode ? Colors.grey[400] : Colors.grey[700],
-                ),
-              ),
-              const SizedBox(height: 30),
-
-              /// Icon Card
-              _buildContactCard(
-                Icons.phone_in_talk_rounded,
-                "Call Support",
-                "+8801234567890",
-                () => _launchUrl("tel:+8801234567890"),
-                isDarkMode,
-              ),
-              _buildContactCard(
-                Icons.email_rounded,
-                "Email Us",
-                "support@gulfdrive.com",
-                () => _launchUrl("mailto:support@gulfdrive.com"),
-                isDarkMode,
-              ),
-              _buildContactCard(
-                Icons.chat_bubble_rounded,
-                "WhatsApp",
-                "+8801234567890",
-                () => _launchUrl("https://wa.me/8801234567890"),
-                isDarkMode,
-              ),
-              _buildContactCard(
-                Icons.place_rounded,
-                "Office Address",
-                "House 12, Road 5, Sector 10, Uttara, Dhaka",
-                () => _launchUrl(
-                  "https://www.google.com/maps/search/?api=1&query=Uttara+Sector+10+Dhaka",
-                ),
-                isDarkMode,
-              ),
-              _buildContactCard(
-                Icons.schedule_rounded,
-                "Business Hours",
-                "Sat - Thu: 9:00 AM - 6:00 PM",
-                null,
-                isDarkMode,
-              ),
-            ],
-          ),
+              isDarkMode,
+            ),
+            _buildContactCard(
+              Icons.schedule_rounded,
+              "Business Hours",
+              "Sat - Thu: 9:00 AM - 6:00 PM",
+              null,
+              isDarkMode,
+            ),
+          ],
         ),
       ),
-    );
+    ).toResponsiveScaffold(context, "Contact & Support");
   }
 
   Widget _buildContactCard(
