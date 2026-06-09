@@ -9,7 +9,7 @@ extension ResponsiveScaffold on Widget {
 
     return Scaffold(
       drawer: isDesktop ? null : const Drawer(child: AppMenu()),
-      appBar: CustomAppBar(title: title),
+      appBar: CustomAppBar(title: title, allCars: []),
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

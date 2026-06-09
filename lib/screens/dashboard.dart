@@ -16,7 +16,7 @@ class Dashboard extends StatelessWidget {
 
     return Scaffold(
       drawer: isDesktop ? null : const Drawer(child: AppMenu()),
-      appBar: const CustomAppBar(title: "GulfDrive"),
+      appBar: const CustomAppBar(title: "GulfDrive", allCars: []),
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

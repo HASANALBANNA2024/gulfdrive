@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:gulfdrive/search_delegate/global_search_delegate.dart'; // তোমার সার্চ ডেলিগেট ফাইল ইমপোর্ট করো
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  const CustomAppBar({super.key, required this.title});
+  final List<Map<String, dynamic>> allCars;
+
+  const CustomAppBar({super.key, required this.title, required this.allCars});
+
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
@@ -34,21 +38,29 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ],
       ),
       actions: [
-        /// Search Bar (Responsive)
         LayoutBuilder(
           builder: (context, constraints) {
             double screenWidth = MediaQuery.of(context).size.width;
             bool isMobile = screenWidth < 600;
+
             if (isMobile) {
               return IconButton(
                 icon: const Icon(Icons.search),
-                onPressed: () {},
+                onPressed: () => showSearch(
+                  context: context,
+                  delegate: GlobalSearchDelegate(allCars),
+                ),
               );
             } else {
               return Container(
                 width: screenWidth * 0.4,
                 padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                 child: TextField(
+                  readOnly: true, // সার্চ রেজাল্ট দেখানোর জন্য শুধু রিড মোড
+                  onTap: () => showSearch(
+                    context: context,
+                    delegate: GlobalSearchDelegate(allCars),
+                  ),
                   decoration: InputDecoration(
                     hintText: "Search cars...",
                     prefixIcon: const Icon(Icons.search, size: 20),

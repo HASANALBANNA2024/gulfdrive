@@ -97,7 +97,9 @@ class CarCard extends StatelessWidget {
         children: [
           Icon(icon, size: 16, color: Colors.blue),
           const SizedBox(width: 8),
-          Text(text),
+          Expanded(
+            child: Text(text, overflow: TextOverflow.ellipsis, maxLines: 1),
+          ),
         ],
       ),
     );
