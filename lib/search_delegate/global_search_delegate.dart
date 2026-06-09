@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gulfdrive/screens/car_details_screen.dart';
 
-class GlobalSearchDelegate extends SearchDelegate {
-  final List<Map<String, dynamic>> allCars;
+import 'car_data_provider.dart';
 
-  GlobalSearchDelegate(this.allCars);
+class GlobalSearchDelegate extends SearchDelegate {
+  // কনস্ট্রাক্টর থেকে লিস্ট সরিয়ে দেওয়া হয়েছে
+  GlobalSearchDelegate();
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -23,19 +24,20 @@ class GlobalSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    /// Search Logic
-    final results = allCars.where((car) {
-      final q = query.toLowerCase();
+    final q = query.toLowerCase();
 
-      // এখানে সব প্যারামিটার একসাথে চেক করা হচ্ছে
-      final name = (car['name']?.toString() ?? '').toLowerCase();
-      final brand = (car['brand']?.toString() ?? '').toLowerCase();
-      final category = (car['category']?.toString() ?? '').toLowerCase();
-      final transmission = (car['transmission']?.toString() ?? '')
+    final results = CarDataProvider.allCars.where((car) {
+      // এখানে আমরা চেক করছি ডাটা যদি null হয় তবে সেটি খালি স্ট্রিং হিসেবে ধরবে
+      String name = (car['name'] ?? '').toString().toLowerCase();
+      String brand = (car['brand'] ?? '').toString().toLowerCase();
+      String category = (car['category'] ?? '').toString().toLowerCase();
+      String transmission = (car['transmission'] ?? '')
+          .toString()
           .toLowerCase();
-      final fuelType = (car['fuel_type']?.toString() ?? '').toLowerCase();
-      final engine = (car['engine_type']?.toString() ?? '').toLowerCase();
+      String fuelType = (car['fuel_type'] ?? '').toString().toLowerCase();
+      String engine = (car['engine_type'] ?? '').toString().toLowerCase();
 
+      // এখন যদি ইউজার 'Toyota' লিখে তবে Toyota Corolla চলে আসবে
       return name.contains(q) ||
           brand.contains(q) ||
           category.contains(q) ||
@@ -53,19 +55,10 @@ class GlobalSearchDelegate extends SearchDelegate {
       itemBuilder: (context, index) {
         final car = results[index];
         return ListTile(
-          leading: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.network(
-              car['image_url'] ?? '',
-              width: 50,
-              height: 50,
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => const Icon(Icons.directions_car),
-            ),
-          ),
           title: Text(car['name'] ?? 'Unknown Car'),
+          // এখানে NULL চেক করা হয়েছে যাতে ক্র্যাশ না করে
           subtitle: Text(
-            "${car['brand']} • ${car['transmission']} • ${car['fuel_type']}",
+            "${car['brand'] ?? ''} • ${car['transmission'] ?? 'N/A'}",
           ),
           onTap: () {
             close(context, null);
@@ -81,7 +74,6 @@ class GlobalSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    // সার্চ করার সময় সাজেশন দেখানোর জন্য (ঐচ্ছিক)
     return const Center(child: Text("Search by name, brand, or features..."));
   }
 }

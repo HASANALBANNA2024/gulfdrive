@@ -3,9 +3,8 @@ import 'package:gulfdrive/search_delegate/global_search_delegate.dart'; // ত�
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final List<Map<String, dynamic>> allCars;
 
-  const CustomAppBar({super.key, required this.title, required this.allCars});
+  const CustomAppBar({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +47,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 icon: const Icon(Icons.search),
                 onPressed: () => showSearch(
                   context: context,
-                  delegate: GlobalSearchDelegate(allCars),
+                  delegate: GlobalSearchDelegate(),
                 ),
               );
             } else {
@@ -59,7 +58,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   readOnly: true, // সার্চ রেজাল্ট দেখানোর জন্য শুধু রিড মোড
                   onTap: () => showSearch(
                     context: context,
-                    delegate: GlobalSearchDelegate(allCars),
+                    delegate: GlobalSearchDelegate(),
                   ),
                   decoration: InputDecoration(
                     hintText: "Search cars...",

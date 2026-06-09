@@ -2,21 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:gulfdrive/widgets/car_card.dart';
 import 'package:gulfdrive/widgets/custom_app_bar.dart';
 
+import '../search_delegate/car_data_provider.dart';
 import '../stats/fleet_dashboard_stats.dart';
 import '../widgets/app_menu.dart';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
   final Map<String, dynamic> data;
   const Dashboard({super.key, required this.data});
 
   @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final List cars = widget.data['cars'] ?? [];
+      CarDataProvider.allCars = List<Map<String, dynamic>>.from(cars);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final List cars = data['cars'] ?? [];
+    final List cars = widget.data['cars'] ?? [];
     final bool isDesktop = MediaQuery.of(context).size.width >= 1100;
 
     return Scaffold(
       drawer: isDesktop ? null : const Drawer(child: AppMenu()),
-      appBar: const CustomAppBar(title: "GulfDrive", allCars: []),
+      appBar: const CustomAppBar(title: "Gulf Drive"),
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -42,12 +57,11 @@ class Dashboard extends StatelessWidget {
                       const FleetDashboardStats(),
                       const SizedBox(height: 20),
 
-                      /// wrap use
+                      /// UI সব আগের মতোই আছে
                       LayoutBuilder(
                         builder: (context, constraints) {
                           double totalWidth = constraints.maxWidth;
 
-                          /// card limit with screen size width
                           double cardWidth;
                           if (totalWidth >= 1100) {
                             cardWidth = (totalWidth / 4) - 16;
@@ -71,7 +85,6 @@ class Dashboard extends StatelessWidget {
                           );
                         },
                       ),
-                      // ------------------------------------------
                     ],
                   ),
                 ),
