@@ -21,14 +21,23 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         fontSize: 20,
         fontWeight: FontWeight.bold,
       ),
-      leading: MediaQuery.of(context).size.width < 900
-          ? Builder(
-              builder: (context) => IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () => Scaffold.of(context).openDrawer(),
-              ),
+
+      // এখানে নেভিগেশন লজিক যোগ করা হয়েছে
+      leading: Navigator.canPop(context)
+          ? IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () =>
+                  Navigator.of(context).popUntil((route) => route.isFirst),
             )
-          : null,
+          : (MediaQuery.of(context).size.width < 900
+                ? Builder(
+                    builder: (context) => IconButton(
+                      icon: const Icon(Icons.menu),
+                      onPressed: () => Scaffold.of(context).openDrawer(),
+                    ),
+                  )
+                : null),
+
       title: Row(
         children: [
           const Icon(Icons.directions_car, color: Colors.blue),
