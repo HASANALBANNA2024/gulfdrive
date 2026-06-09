@@ -6,8 +6,8 @@ import 'package:gulfdrive/widgets/services_screen.dart';
 import 'package:gulfdrive/widgets/terms_conditions_page.dart';
 
 import '../abouts/about_screen.dart';
+import '../main.dart';
 import '../screens/car_details_screen.dart';
-import '../theme/app_theme.dart';
 
 class AppMenu extends StatefulWidget {
   const AppMenu({super.key});
@@ -152,8 +152,8 @@ class _AppMenuState extends State<AppMenu> {
               secondary: const Icon(Icons.dark_mode),
               title: const Text("Dark Mode"),
               value: mode == ThemeMode.dark,
-              onChanged: (val) =>
-                  themeNotifier.value = val ? ThemeMode.dark : ThemeMode.light,
+              // এখানে সরাসরি themeNotifier.value না লিখে আমার দেওয়া toggleTheme ফাংশনটি কল করো
+              onChanged: (val) => toggleTheme(val),
             );
           },
         ),
