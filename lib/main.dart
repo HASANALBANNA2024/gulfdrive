@@ -17,7 +17,9 @@ Future<void> main() async {
   // Supabase ইনিশিয়ালাইজ
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
 
-  // অ্যাপ চালু হওয়ার সময় সেভ করা থিমটি লোড করা
+  /// final supabaseService = SupabaseService();
+  /// await supabaseService.seedDatabase();
+
   final prefs = await SharedPreferences.getInstance();
   final isDarkMode = prefs.getBool('isDarkMode') ?? false;
   themeNotifier.value = isDarkMode ? ThemeMode.dark : ThemeMode.light;
