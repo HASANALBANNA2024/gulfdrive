@@ -4,8 +4,23 @@ import 'package:gulfdrive/screens/car_details_screen.dart';
 import 'car_data_provider.dart';
 
 class GlobalSearchDelegate extends SearchDelegate {
-  // কনস্ট্রাক্টর থেকে লিস্ট সরিয়ে দেওয়া হয়েছে
   GlobalSearchDelegate();
+
+  /// dark and light mode
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    final theme = Theme.of(context);
+    return theme.copyWith(
+      appBarTheme: theme.appBarTheme.copyWith(
+        elevation: 0,
+        backgroundColor: theme.scaffoldBackgroundColor,
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        hintStyle: TextStyle(color: theme.hintColor.withOpacity(0.5)),
+        border: InputBorder.none,
+      ),
+    );
+  }
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -22,58 +37,77 @@ class GlobalSearchDelegate extends SearchDelegate {
     );
   }
 
-  @override
-  Widget buildResults(BuildContext context) {
+  /// common result filter logic
+  List<Map<String, dynamic>> _getFilteredResults() {
     final q = query.toLowerCase();
-
-    final results = CarDataProvider.allCars.where((car) {
-      // এখানে আমরা চেক করছি ডাটা যদি null হয় তবে সেটি খালি স্ট্রিং হিসেবে ধরবে
+    return CarDataProvider.allCars.where((car) {
       String name = (car['name'] ?? '').toString().toLowerCase();
       String brand = (car['brand'] ?? '').toString().toLowerCase();
       String category = (car['category'] ?? '').toString().toLowerCase();
-      String transmission = (car['transmission'] ?? '')
-          .toString()
-          .toLowerCase();
-      String fuelType = (car['fuel_type'] ?? '').toString().toLowerCase();
-      String engine = (car['engine_type'] ?? '').toString().toLowerCase();
-
-      // এখন যদি ইউজার 'Toyota' লিখে তবে Toyota Corolla চলে আসবে
-      return name.contains(q) ||
-          brand.contains(q) ||
-          category.contains(q) ||
-          transmission.contains(q) ||
-          fuelType.contains(q) ||
-          engine.contains(q);
+      return name.contains(q) || brand.contains(q) || category.contains(q);
     }).toList();
-
-    if (results.isEmpty) {
-      return const Center(child: Text("No cars found matching your search."));
-    }
-
-    return ListView.builder(
-      itemCount: results.length,
-      itemBuilder: (context, index) {
-        final car = results[index];
-        return ListTile(
-          title: Text(car['name'] ?? 'Unknown Car'),
-          // এখানে NULL চেক করা হয়েছে যাতে ক্র্যাশ না করে
-          subtitle: Text(
-            "${car['brand'] ?? ''} • ${car['transmission'] ?? 'N/A'}",
-          ),
-          onTap: () {
-            close(context, null);
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => CarDetailsScreen(car: car)),
-            );
-          },
-        );
-      },
-    );
   }
 
+  /// no enter click
   @override
   Widget buildSuggestions(BuildContext context) {
-    return const Center(child: Text("Search by name, brand, or features..."));
+    return _buildResultsList(_getFilteredResults());
+  }
+
+  /// enter click result
+  @override
+  Widget buildResults(BuildContext context) {
+    return _buildResultsList(_getFilteredResults());
+  }
+
+  /// common list builder
+  Widget _buildResultsList(List<Map<String, dynamic>> results) {
+    if (results.isEmpty) {
+      return const Center(child: Text("No cars found."));
+    }
+
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 1000),
+        child: ListView.builder(
+          itemCount: results.length,
+          itemBuilder: (context, index) {
+            final car = results[index];
+            return Card(
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: ListTile(
+                leading: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    car['image_url'] ?? '',
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) =>
+                        const Icon(Icons.directions_car),
+                  ),
+                ),
+                title: Text(
+                  car['name'] ?? 'Unknown',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(
+                  "${car['brand'] ?? ''} • ${car['transmission'] ?? 'N/A'} • ${car['fuel_type'] ?? ''}",
+                ),
+                onTap: () {
+                  close(context, null);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => CarDetailsScreen(car: car),
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 }
