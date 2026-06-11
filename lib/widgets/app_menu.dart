@@ -62,7 +62,9 @@ class _AppMenuState extends State<AppMenu> {
           ),
         ),
 
-        _buildListTile(context, "Dashboard", Icons.dashboard, () {}),
+        _buildListTile(context, "Dashboard", Icons.dashboard, () {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        }),
 
         _buildListTile(context, "Services", Icons.directions_car, () {
           Navigator.of(context, rootNavigator: true).push(
@@ -152,7 +154,6 @@ class _AppMenuState extends State<AppMenu> {
               secondary: const Icon(Icons.dark_mode),
               title: const Text("Dark Mode"),
               value: mode == ThemeMode.dark,
-              // এখানে সরাসরি themeNotifier.value না লিখে আমার দেওয়া toggleTheme ফাংশনটি কল করো
               onChanged: (val) => toggleTheme(val),
             );
           },
