@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:gulfdrive/screens/splash_screen.dart';
 import 'package:gulfdrive/theme/app_theme.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import "package:shared_preferences/shared_preferences.dart";
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-/// Supabase কনফিগ
+/// Supabase configuration
 const String supabaseUrl = 'https://hmvcvwayuritvdpwvcby.supabase.co';
 const String supabaseAnonKey = 'sb_publishable_sDRMchk9eMxXNcrU2xL0DA_9ODKdutp';
 
-/// থিম হ্যান্ডেল করার জন্য গ্লোবাল নটিফায়ার
+/// theme handle for global notifier
 final ValueNotifier<ThemeMode> themeNotifier = ValueNotifier(ThemeMode.light);
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Supabase ইনিশিয়ালাইজ
+  /// supabase initialization
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
 
   /// final supabaseService = SupabaseService();
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-/// থিম পরিবর্তন করার ফাংশন (যেখানে সুইচ বাটন আছে সেখানে এটি কল করবে)
+/// Theme change function
 Future<void> toggleTheme(bool isDark) async {
   themeNotifier.value = isDark ? ThemeMode.dark : ThemeMode.light;
   final prefs = await SharedPreferences.getInstance();
