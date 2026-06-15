@@ -131,7 +131,7 @@ class CarDetailsScreen extends StatelessWidget {
 
               const SizedBox(height: 30),
 
-              // ৫. কল বাটন
+              /// call button
               SizedBox(
                 width: double.infinity,
                 height: 55,
